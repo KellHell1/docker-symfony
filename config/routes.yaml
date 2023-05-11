@@ -9,3 +9,7 @@ kernel:
 # app/config/routing.yml
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+# config/routes.yaml
+api_login_check:
+    path: /api/login_check

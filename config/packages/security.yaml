@@ -12,21 +12,34 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
-        main:
-            pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                enable_csrf: true
-                login_path: fos_user_security_login
-                check_path: fos_user_security_check
-                default_target_path: /
-                always_use_default_target_path: true
-            logout:
-                path: fos_user_security_logout
-                target: /
+        api_login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        refresh:
+            pattern: ^/api/refresh
+            stateless: true
+            lazy: true
+        register:
+            pattern: ^/api/register
+            lazy: true
+        reset_password_request:
+            pattern: ^/api/reset-password
+            lazy: true
+        update_password:
+            pattern: ^/api/update-password
+            lazy: true
+        api:
+            pattern: ^/api/
+            stateless: true
+            lazy: false
+            jwt: ~
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/login, role: PUBLIC_ACCESS }
+        - { path: ^/api/register, role: PUBLIC_ACCESS }
+        - { path: ^/api/resetting, role: PUBLIC_ACCESS }
+        - { path: ^/api/admin/, role: ROLE_ADMIN }
