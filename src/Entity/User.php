@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    protected $id = null;
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    protected $id;
 
     public function getId(): ?int
     {
