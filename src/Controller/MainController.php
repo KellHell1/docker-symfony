@@ -9,9 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/qq')]
-    public function number(): Response
+    #[Route('/')]
+    public function main(): Response
     {
-        return new Response('hello');
+        return $this->render('base.html.twig', []);
     }
 }
