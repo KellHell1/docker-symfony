@@ -6,10 +6,14 @@ RUN apt update \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install zip
+    && docker-php-ext-install zip \
+    && pecl install xdebug-3.2.0 \
+    && docker-php-ext-enable xdebug
 
 WORKDIR /var/www
 COPY composer.json /var/www
+
+ADD ./php/php.ini /usr/local/etc/php/php.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

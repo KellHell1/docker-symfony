@@ -1,7 +1,7 @@
 # config/packages/security.yaml
 security:
     password_hashers:
-        FOS\UserBundle\Model\UserInterface: auto
+        FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER]
@@ -19,27 +19,42 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
         refresh:
             pattern: ^/api/refresh
             stateless: true
             lazy: true
+
         register:
             pattern: ^/api/register
+            stateless: true
             lazy: true
+
         reset_password_request:
             pattern: ^/api/reset-password
+            stateless: true
             lazy: true
+
         update_password:
             pattern: ^/api/update-password
-            lazy: true
-        api:
-            pattern: ^/api/
             stateless: true
-            lazy: false
+            lazy: true
+
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: fos_userbundle
             jwt: ~
 
+        qwerty:
+            pattern: ^/api/qwerty
+            stateless: true
+            lazy: false
+
     access_control:
-        - { path: ^/api/login, role: PUBLIC_ACCESS }
-        - { path: ^/api/register, role: PUBLIC_ACCESS }
-        - { path: ^/api/resetting, role: PUBLIC_ACCESS }
-        - { path: ^/api/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/qwerty, roles: ROLE_ADMIN }
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/admin/, roles: ROLE_ADMIN }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

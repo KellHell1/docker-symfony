@@ -21,6 +21,8 @@ services:
       dockerfile: ./php/Dockerfile
     ports:
       - '9000:9000'
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
       - .:/var/www
       - ./vendor:/var/www/vendor
