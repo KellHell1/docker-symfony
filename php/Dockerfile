@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 RUN apt update \
     && apt install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip \
@@ -15,3 +15,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+
+ARG UNAME=${UNAME}
+ARG UID=${UID}
+ARG GID=${GID}
+RUN groupadd -g $GID -o $UNAME \
+    && useradd -m -u $UID -g $GID -o -s /bin/ash $UNAME
+
+RUN mkdir -p /var/www/vendor && chown -R $UNAME:$UNAME /var/www/vendor
+
+USER $UNAME
